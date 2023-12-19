@@ -1,0 +1,37 @@
+- name: Disable Nodejs default version
+  ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+
+- name: Install NodeJS
+  ansible.builtin.dnf:
+    name: nodejs
+    state: installed
+
+- name: Include app pre-requisite
+  ansible.builtin.import_tasks:
+    file: app-prereq.yml
+
+- name: Include app-preclean
+  ansible.builtin.import_tasks:
+    file: app-pre-clean.yml
+
+- name: Include app-download
+  ansible.builtin.import_tasks:
+    file: app-download.yml
+
+- name: Install NodeJS Dependencies
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
+
+- name: Copy {{component}} Service file
+  ansible.builtin.template:
+    src: {{component}}.service
+    dest: /etc/systemd/system/{{component}}.service
+
+- name: Start the {{component}} service
+  ansible.builtin.import_tasks:
+    file: systemd.yml
+
+- name: Load Schema
+  ansible.builtin.import_tasks:
+    file: schema.yml
