@@ -1,0 +1,28 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname frontend
+
+- name: Install Nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: installed
+
+- name: Include app-preclean
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-pre-clean.yml
+
+- name: Include app-download
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-download.yml
+
+- name: Copy Roboshop Config file
+  ansible.builtin.template:
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+
+- name: Restart Nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
