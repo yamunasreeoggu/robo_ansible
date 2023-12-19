@@ -1,0 +1,24 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname mongodb
+
+- name: Setup the MongoDB repo file
+  ansible.builtin.template:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install MongoDB
+  ansible.builtin.dnf:
+    name: mongodb-org
+    state: installed
+
+- name: Update listen address
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: 127.0.0.1
+    replace: 0.0.0.0
+
+- name: Restart Mongod service
+  ansible.builtin.systemd:
+    name: mongod
+    state: restarted
+    enabled: yes
