@@ -25,7 +25,7 @@
 
 - name: Copy {{component}} Service file
   ansible.builtin.template:
-    src: "{{ component }}".service
+    src: catalogue.service
     dest: /etc/systemd/system/{{component}}.service
 
 - name: Start the {{component}} service
