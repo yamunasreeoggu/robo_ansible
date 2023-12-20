@@ -1,0 +1,7 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname shipping
+
+- name: Include maven Setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: maven.yml
