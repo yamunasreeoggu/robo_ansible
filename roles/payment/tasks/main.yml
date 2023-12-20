@@ -1,0 +1,7 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname payment
+
+- name: Include python Setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: python.yml
