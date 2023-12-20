@@ -1,0 +1,7 @@
+- name: Set Hostname
+  ansible.builtin.shell: set-hostname cart
+
+- name: Include NodeJS Setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs.yml

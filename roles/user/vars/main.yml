@@ -1,2 +1,3 @@
 component: user
 app_loc: /app
+is_schema_needed: true
